@@ -1,0 +1,118 @@
+<UserControl x:Class="InventoryManagementSystem.Views.AlertView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="550"
+             d:DesignWidth="1100"
+             mc:Ignorable="d">
+
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Background="#E74C3C" Padding="15" CornerRadius="5" Grid.Row="0">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="🚨 Stock Alerts" 
+                           FontSize="24" 
+                           FontWeight="SemiBold" 
+                           Foreground="White" 
+                           VerticalAlignment="Center"/>
+                
+                <TextBlock Text=" (Products with Stock ≤ Reorder Level)" 
+                           Margin="15,0,0,0"
+                           FontSize="16" 
+                           Foreground="#ECF0F1" 
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Toolbar -->
+        <StackPanel Orientation="Horizontal" 
+                    Margin="0,15,0,10" 
+                    Grid.Row="1">
+            
+            <Button Content="🔄 Refresh Alerts" 
+                    Command="{Binding LoadAlertsCommand}"
+                    Padding="20,10"
+                    FontSize="14"
+                    FontWeight="Medium"
+                    Background="#3498DB"
+                    Foreground="White"
+                    BorderThickness="0"
+                    Cursor="Hand"/>
+            
+            <!-- Optional: Add a count -->
+            <TextBlock Text="{Binding LowStockProducts.Count, StringFormat='{} Alerts found: {0}'}" 
+                       Margin="30,5,0,0"
+                       FontSize="15"
+                       VerticalAlignment="Center"
+                       FontWeight="Medium"/>
+        </StackPanel>
+
+        <!-- DataGrid -->
+        <DataGrid Grid.Row="2"
+                  ItemsSource="{Binding LowStockProducts}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  AlternatingRowBackground="#F8F8F8"
+                  RowBackground="White"
+                  GridLinesVisibility="None"
+                  SelectionMode="Single"
+                  CanUserResizeColumns="True">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="60" 
+                                    Binding="{Binding Id}" 
+                                    Header="ID" />
+
+                <DataGridTextColumn Width="180" 
+                                    Binding="{Binding Name}" 
+                                    Header="Product Name" />
+
+                <DataGridTextColumn Width="100" 
+                                    Binding="{Binding Price, StringFormat=C}" 
+                                    Header="Price" />
+
+                <DataGridTextColumn Width="90" 
+                                    Binding="{Binding StockQuantity}" 
+                                    Header="Current Stock" />
+
+                <DataGridTextColumn Width="90" 
+                                    Binding="{Binding ReorderLevel}" 
+                                    Header="Reorder Level" />
+
+                <DataGridTextColumn Width="160" 
+                                    Binding="{Binding Supplier.Name}" 
+                                    Header="Supplier" />
+
+                <!-- Highlight low stock -->
+                <DataGridTextColumn Width="120" 
+                                    Binding="{Binding StockQuantity}" 
+                                    Header="Status">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="Red"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="Text" Value="⚠ LOW STOCK"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Empty state message -->
+        <TextBlock Grid.Row="2"
+                   Text="🎉 All products are well stocked! No alerts right now."
+                   FontSize="18"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Foreground="#7F8C8E"
+                   Visibility="{Binding LowStockProducts.Count, Converter={StaticResource ZeroToCollapsedConverter}}"
+                   Margin="0,50,0,0"/>
+    </Grid>
+</UserControl>

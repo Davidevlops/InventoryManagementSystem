@@ -1,0 +1,79 @@
+﻿<!--  MainWindow.xaml  -->
+<Window
+    x:Class="InventoryManagementSystem.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Inventory Management System"
+    Width="1100"
+    Height="650"
+    MinWidth="900"
+    MinHeight="550"
+    ResizeMode="CanResize"
+    WindowStartupLocation="CenterScreen">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--  ==================== HEADER WITH LOGO ====================  -->
+        <Border Padding="15" Background="#2C3E50">
+            <DockPanel>
+                <!--  Logo on the left  -->
+                <Image
+                    Width="48"
+                    Height="48"
+                    Margin="0,0,15,0"
+                    VerticalAlignment="Center"
+                    DockPanel.Dock="Left"
+                    Source="/Images/logo.png" />
+
+                <!--  Title  -->
+                <TextBlock
+                    VerticalAlignment="Center"
+                    DockPanel.Dock="Left"
+                    FontSize="22"
+                    FontWeight="SemiBold"
+                    Foreground="White"
+                    Text="📦 Inventory Management System" />
+
+                <!--  Navigation Buttons (kept exactly as you had them)  -->
+                <StackPanel
+                    Margin="50,0,0,0"
+                    DockPanel.Dock="Right"
+                    Orientation="Horizontal">
+                    <Button
+                        Margin="8"
+                        Padding="18,10"
+                        Command="{Binding ShowProductsCommand}"
+                        Content="Products"
+                        FontSize="14"
+                        FontWeight="Medium" />
+
+                    <Button
+                        Margin="8"
+                        Padding="18,10"
+                        Command="{Binding ShowSuppliersCommand}"
+                        Content="Suppliers"
+                        FontSize="14"
+                        FontWeight="Medium" />
+
+                    <Button
+                        Margin="8"
+                        Padding="18,10"
+                        Command="{Binding ShowAlertsCommand}"
+                        Content="Stock Alerts"
+                        FontSize="14"
+                        FontWeight="Medium" />
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!--  Content Area (unchanged)  -->
+        <ContentControl
+            Grid.Row="1"
+            Margin="10"
+            Content="{Binding CurrentView}" />
+    </Grid>
+</Window>
