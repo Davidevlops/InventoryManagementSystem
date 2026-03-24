@@ -2,7 +2,7 @@
   "version": 3,
   "targets": {
     "net8.0-windows7.0": {
-      "CommunityToolkit.Mvvm/8.0.0": {
+      "CommunityToolkit.Mvvm/8.2.2": {
         "type": "package",
         "compile": {
           "lib/net6.0/CommunityToolkit.Mvvm.dll": {
@@ -1539,22 +1539,25 @@
     }
   },
   "libraries": {
-    "CommunityToolkit.Mvvm/8.0.0": {
-      "sha512": "Jiu2g5WUdXRwzhJkHB+B4JBKP5A5+fp8xKiW/ZQo5PI+DruI7MbPEcK9K/Aw0YzTiWRuG6CBluzYIWN5Eo7BkQ==",
+    "CommunityToolkit.Mvvm/8.2.2": {
+      "sha512": "r0g0k9tGYdrnz8R7T3x5UiokDffeevzK/2P/9SBL6fqLgN8B157MIi/bVUWI1KAz6ZorZrK9AdABCWUeXZZsvA==",
       "type": "package",
-      "path": "communitytoolkit.mvvm/8.0.0",
+      "path": "communitytoolkit.mvvm/8.2.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "License.md",
         "ThirdPartyNotices.txt",
+        "analyzers/dotnet/roslyn4.0/cs/CommunityToolkit.Mvvm.CodeFixers.dll",
         "analyzers/dotnet/roslyn4.0/cs/CommunityToolkit.Mvvm.SourceGenerators.dll",
+        "analyzers/dotnet/roslyn4.3/cs/CommunityToolkit.Mvvm.CodeFixers.dll",
+        "analyzers/dotnet/roslyn4.3/cs/CommunityToolkit.Mvvm.SourceGenerators.dll",
         "build/netstandard2.0/CommunityToolkit.Mvvm.targets",
         "build/netstandard2.1/CommunityToolkit.Mvvm.targets",
         "buildTransitive/netstandard2.0/CommunityToolkit.Mvvm.targets",
         "buildTransitive/netstandard2.1/CommunityToolkit.Mvvm.targets",
-        "communitytoolkit.mvvm.8.0.0.nupkg.sha512",
+        "communitytoolkit.mvvm.8.2.2.nupkg.sha512",
         "communitytoolkit.mvvm.nuspec",
         "lib/net6.0/CommunityToolkit.Mvvm.dll",
         "lib/net6.0/CommunityToolkit.Mvvm.pdb",
@@ -3776,11 +3779,10 @@
   },
   "projectFileDependencyGroups": {
     "net8.0-windows7.0": [
-      "CommunityToolkit.Mvvm >= 8.0.0",
-      "Microsoft.EntityFrameworkCore >= 8.0.0",
-      "Microsoft.EntityFrameworkCore.Design >= 8.0.0",
+      "CommunityToolkit.Mvvm >= 8.2.2",
       "Microsoft.EntityFrameworkCore.Sqlite >= 8.0.0",
       "Microsoft.EntityFrameworkCore.Tools >= 8.0.0",
+      "Microsoft.Extensions.Configuration >= 8.0.0",
       "Microsoft.Extensions.DependencyInjection >= 8.0.0",
       "Microsoft.Extensions.Hosting >= 8.0.0"
     ]
@@ -3792,11 +3794,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Development\\MyProjects\\Inventory-Management-System\\Inventory-Management-System.csproj",
-      "projectName": "Inventory-Management-System",
-      "projectPath": "C:\\Development\\MyProjects\\Inventory-Management-System\\Inventory-Management-System.csproj",
+      "projectUniqueName": "C:\\Development\\MyProjects\\palal\\InventoryManagementSystem\\InventoryManagementSystem.csproj",
+      "projectName": "InventoryManagementSystem",
+      "projectPath": "C:\\Development\\MyProjects\\palal\\InventoryManagementSystem\\InventoryManagementSystem.csproj",
       "packagesPath": "C:\\Users\\David\\.nuget\\packages\\",
-      "outputPath": "C:\\Development\\MyProjects\\Inventory-Management-System\\obj\\",
+      "outputPath": "C:\\Development\\MyProjects\\palal\\InventoryManagementSystem\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -3829,17 +3831,7 @@
         "dependencies": {
           "CommunityToolkit.Mvvm": {
             "target": "Package",
-            "version": "[8.0.0, )"
-          },
-          "Microsoft.EntityFrameworkCore": {
-            "target": "Package",
-            "version": "[8.0.0, )"
-          },
-          "Microsoft.EntityFrameworkCore.Design": {
-            "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-            "suppressParent": "All",
-            "target": "Package",
-            "version": "[8.0.0, )"
+            "version": "[8.2.2, )"
           },
           "Microsoft.EntityFrameworkCore.Sqlite": {
             "target": "Package",
@@ -3848,6 +3840,10 @@
           "Microsoft.EntityFrameworkCore.Tools": {
             "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
             "suppressParent": "All",
+            "target": "Package",
+            "version": "[8.0.0, )"
+          },
+          "Microsoft.Extensions.Configuration": {
             "target": "Package",
             "version": "[8.0.0, )"
           },
@@ -3875,7 +3871,7 @@
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           },
-          "Microsoft.WindowsDesktop.App.WindowsForms": {
+          "Microsoft.WindowsDesktop.App.WPF": {
             "privateAssets": "none"
           }
         },

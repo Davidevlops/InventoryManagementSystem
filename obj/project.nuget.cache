@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "4PMV9YmZ/C9g/fTUaE47wHyPGna6mF5SFaiZO2nDez1eGwO4uwHsFnrMHsFi3MzLKX6LwH1aee9e4+vneCPJOA==",
+  "dgSpecHash": "DNwLkx6BeXAlSWh/gqqc/3yj7K1aZOPsdDBzUyNj6Yl8mRIej9nzQ2iMobmM2xDlToW74iqZo+sOnsxpz8sTQw==",
   "success": true,
-  "projectFilePath": "C:\\Development\\MyProjects\\Inventory-Management-System\\Inventory-Management-System.csproj",
+  "projectFilePath": "C:\\Development\\MyProjects\\palal\\InventoryManagementSystem\\InventoryManagementSystem.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\David\\.nuget\\packages\\communitytoolkit.mvvm\\8.0.0\\communitytoolkit.mvvm.8.0.0.nupkg.sha512",
+    "C:\\Users\\David\\.nuget\\packages\\communitytoolkit.mvvm\\8.2.2\\communitytoolkit.mvvm.8.2.2.nupkg.sha512",
     "C:\\Users\\David\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\David\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
     "C:\\Users\\David\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\3.3.3\\microsoft.codeanalysis.analyzers.3.3.3.nupkg.sha512",

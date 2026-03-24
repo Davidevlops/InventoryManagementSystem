@@ -1,40 +1,47 @@
-// ViewModels/SupplierViewModel.cs
-
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
+using InventoryManagementSystem.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 
-namespace Inventory_Management_System.ViewModels
+namespace InventoryManagementSystem.ViewModels
 {
     public partial class SupplierViewModel : ObservableObject
     {
         private readonly AppDbContext _context;
 
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(DeleteSupplierCommand))]
         private ObservableCollection<Supplier> suppliers = new();
 
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(SaveSupplierCommand))]
+        [NotifyCanExecuteChangedFor(nameof(DeleteSupplierCommand))]
         private Supplier? selectedSupplier;
 
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(SaveSupplierCommand))]
         private string name = string.Empty;
 
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(SaveSupplierCommand))]
         private string? contactName;
 
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(SaveSupplierCommand))]
         private string? phone;
 
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(SaveSupplierCommand))]
         private string? email;
 
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(SaveSupplierCommand))]
         private string? address;
 
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(SaveSupplierCommand))]
+        [NotifyCanExecuteChangedFor(nameof(DeleteSupplierCommand))]
         private bool isEditMode;
 
         public IAsyncRelayCommand LoadDataCommand { get; }
@@ -49,33 +56,38 @@ namespace Inventory_Management_System.ViewModels
 
             LoadDataCommand = new AsyncRelayCommand(LoadDataAsync);
             NewSupplierCommand = new RelayCommand(NewSupplier);
-            SaveSupplierCommand = new AsyncRelayCommand(SaveSupplierAsync);
-            DeleteSupplierCommand = new AsyncRelayCommand(DeleteSupplierAsync);
+            SaveSupplierCommand = new AsyncRelayCommand(SaveSupplierAsync, CanSaveSupplier);
+            DeleteSupplierCommand = new AsyncRelayCommand(DeleteSupplierAsync, CanDeleteSupplier);
             CancelEditCommand = new RelayCommand(CancelEdit);
+
+            // Auto-load on creation
+            _ = LoadDataCommand.ExecuteAsync(null);
         }
 
         private async Task LoadDataAsync()
         {
-            var data = await _context.Suppliers.ToListAsync();
-            Suppliers = new ObservableCollection<Supplier>(data);
+            Suppliers = new ObservableCollection<Supplier>(
+                await _context.Suppliers
+                    .Include(s => s.Products)
+                    .ToListAsync());
         }
 
         private void NewSupplier()
         {
             SelectedSupplier = null;
             Name = string.Empty;
-            ContactName = string.Empty;
-            Phone = string.Empty;
-            Email = string.Empty;
+            ContactName = null;
+            Phone = null;
+            Email = null;
             Address = string.Empty;
-            IsEditMode = false;
+            IsEditMode = true;
         }
+
+        private bool CanSaveSupplier() =>
+            IsEditMode && !string.IsNullOrWhiteSpace(Name);
 
         private async Task SaveSupplierAsync()
         {
-            if (string.IsNullOrWhiteSpace(Name))
-                return;
-
             if (IsEditMode && SelectedSupplier != null)
             {
                 // Update existing
@@ -96,7 +108,6 @@ namespace Inventory_Management_System.ViewModels
                     Email = Email,
                     Address = Address
                 };
-
                 await _context.Suppliers.AddAsync(supplier);
             }
 
@@ -105,25 +116,40 @@ namespace Inventory_Management_System.ViewModels
             CancelEdit();
         }
 
+        private bool CanDeleteSupplier() => SelectedSupplier != null && !IsEditMode;
+
         private async Task DeleteSupplierAsync()
         {
-            if (SelectedSupplier == null)
-                return;
+            if (SelectedSupplier == null) return;
 
             _context.Suppliers.Remove(SelectedSupplier);
             await _context.SaveChangesAsync();
             await LoadDataAsync();
+            CancelEdit();
         }
 
         private void CancelEdit()
         {
             SelectedSupplier = null;
             Name = string.Empty;
-            ContactName = string.Empty;
-            Phone = string.Empty;
-            Email = string.Empty;
+            ContactName = null;
+            Phone = null;
+            Email = null;
             Address = string.Empty;
             IsEditMode = false;
+        }
+
+        partial void OnSelectedSupplierChanged(Supplier? value)
+        {
+            if (value != null)
+            {
+                IsEditMode = true;
+                Name = value.Name;
+                ContactName = value.ContactName;
+                Phone = value.Phone;
+                Email = value.Email;
+                Address = value.Address;
+            }
         }
     }
 }

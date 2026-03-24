@@ -1,6 +1,0 @@
-C:\Development\MyProjects\Inventory-Management-System\obj\Debug\net8.0-windows\Inventory-Management-System.csproj.AssemblyReference.cache
-C:\Development\MyProjects\Inventory-Management-System\obj\Debug\net8.0-windows\Inventory-Management-System.GeneratedMSBuildEditorConfig.editorconfig
-C:\Development\MyProjects\Inventory-Management-System\obj\Debug\net8.0-windows\Inventory-Management-System.AssemblyInfoInputs.cache
-C:\Development\MyProjects\Inventory-Management-System\obj\Debug\net8.0-windows\Inventory-Management-System.AssemblyInfo.cs
-C:\Development\MyProjects\Inventory-Management-System\obj\Debug\net8.0-windows\Inventory-Management-System.csproj.CoreCompileInputs.cache
-C:\Development\MyProjects\Inventory-Management-System\obj\Debug\net8.0-windows\Inventory-Management-System.sourcelink.json

@@ -1,23 +1,26 @@
 // Data/AppDbContext.cs
 using Microsoft.EntityFrameworkCore;
 
-public class AppDbContext : DbContext
+namespace InventoryManagementSystem.Data
 {
-    public DbSet<Supplier> Suppliers { get; set; }
-    public DbSet<Product> Products { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    public class AppDbContext : DbContext
     {
-        optionsBuilder.UseSqlite("Data Source=inventory.db");
-    }
+        public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<Product> Products { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        // Optional: configure relationships, indexes, etc.
-        modelBuilder.Entity<Product>()
-            .HasOne(p => p.Supplier)
-            .WithMany(s => s.Products)
-            .HasForeignKey(p => p.SupplierId)
-            .OnDelete(DeleteBehavior.SetNull);
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite("Data Source=inventory.db");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Optional: configure relationships, indexes, etc.
+            modelBuilder.Entity<Product>()
+                .HasOne(p => p.Supplier)
+                .WithMany(s => s.Products)
+                .HasForeignKey(p => p.SupplierId)
+                .OnDelete(DeleteBehavior.SetNull);
+        }
     }
 }

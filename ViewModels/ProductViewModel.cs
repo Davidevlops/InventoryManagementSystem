@@ -1,45 +1,55 @@
-// ViewModels/ProductViewModel.cs
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
+using InventoryManagementSystem.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 
-namespace Inventory_Management_System.ViewModels
+namespace InventoryManagementSystem.ViewModels
 {
     public partial class ProductViewModel : ObservableObject
     {
         private readonly AppDbContext _context;
 
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(SaveProductCommand))]
         private ObservableCollection<Product> products = new();
 
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(SaveProductCommand))]
         private ObservableCollection<Supplier> suppliers = new();
 
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(SaveProductCommand))]
+        [NotifyCanExecuteChangedFor(nameof(DeleteProductCommand))]
         private Product? selectedProduct;
 
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(SaveProductCommand))]
         private string productName = string.Empty;
 
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(SaveProductCommand))]
         private string? description;
 
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(SaveProductCommand))]
         private decimal price;
 
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(SaveProductCommand))]
         private int stockQuantity;
 
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(SaveProductCommand))]
         private int reorderLevel;
 
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(SaveProductCommand))]
         private Supplier? selectedSupplier;
 
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(SaveProductCommand))]
+        [NotifyCanExecuteChangedFor(nameof(DeleteProductCommand))]
         private bool isEditMode;
 
         public IAsyncRelayCommand LoadDataCommand { get; }
@@ -57,17 +67,20 @@ namespace Inventory_Management_System.ViewModels
             SaveProductCommand = new AsyncRelayCommand(SaveProductAsync, CanSaveProduct);
             DeleteProductCommand = new AsyncRelayCommand(DeleteProductAsync, CanDeleteProduct);
             CancelEditCommand = new RelayCommand(CancelEdit);
+
+            // Auto-load on creation (now consistent with SupplierViewModel)
+            _ = LoadDataCommand.ExecuteAsync(null);
         }
 
         public async Task LoadDataAsync()
         {
-            var suppliersData = await _context.Suppliers.ToListAsync();
-            Suppliers = new ObservableCollection<Supplier>(suppliersData);
+            Suppliers = new ObservableCollection<Supplier>(
+                await _context.Suppliers.ToListAsync());
 
-            var productsData = await _context.Products
-                .Include(p => p.Supplier)
-                .ToListAsync();
-            Products = new ObservableCollection<Product>(productsData);
+            Products = new ObservableCollection<Product>(
+                await _context.Products
+                    .Include(p => p.Supplier)
+                    .ToListAsync());
         }
 
         private void NewProduct()
@@ -95,22 +108,25 @@ namespace Inventory_Management_System.ViewModels
         }
 
         private bool CanSaveProduct() =>
-            !string.IsNullOrWhiteSpace(ProductName)
-            && Price >= 0
-            && StockQuantity >= 0
-            && ReorderLevel >= 0
-            && SelectedSupplier != null;
+            IsEditMode &&
+            !string.IsNullOrWhiteSpace(ProductName) &&
+            Price >= 0 &&
+            StockQuantity >= 0 &&
+            ReorderLevel >= 0 &&
+            SelectedSupplier != null;
 
         private async Task SaveProductAsync()
         {
             if (SelectedProduct == null) return;
 
+            // Update entity
             SelectedProduct.Name = ProductName;
             SelectedProduct.Description = Description;
             SelectedProduct.Price = Price;
             SelectedProduct.StockQuantity = StockQuantity;
             SelectedProduct.ReorderLevel = ReorderLevel;
             SelectedProduct.SupplierId = SelectedSupplier!.Id;
+            // Navigation property is set for UI only – EF will use FK
             SelectedProduct.Supplier = SelectedSupplier;
 
             if (SelectedProduct.Id == 0)
@@ -119,6 +135,7 @@ namespace Inventory_Management_System.ViewModels
             await _context.SaveChangesAsync();
             await LoadDataAsync();
 
+            // Reset form
             IsEditMode = false;
             SelectedProduct = null;
             ClearInputFields();
@@ -130,13 +147,11 @@ namespace Inventory_Management_System.ViewModels
         {
             if (SelectedProduct == null) return;
 
-            // Optional: move MessageBox to View layer
             _context.Products.Remove(SelectedProduct);
             await _context.SaveChangesAsync();
             await LoadDataAsync();
         }
 
-        // Automatically populate fields when a product is selected
         partial void OnSelectedProductChanged(Product? value)
         {
             if (value != null)
